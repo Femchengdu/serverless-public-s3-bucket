@@ -1,6 +1,6 @@
 # Serverless project for S3 bucket website
 
-As part of the cloud resume challenge, there is a need to create ann S3 bucket to host a static website.
+As part of the cloud resume challenge, there is a need to create an S3 bucket to host a static website.
 
 I have chosen to use the Serverless framework here because it is the tool I am most familiar with at this time.
 
