@@ -63,6 +63,11 @@ resources:
               Action:
                 - s3:GetObject
                 - s3:PutObject
-                - s3:ListBucket
               Resource: "arn:aws:s3:::${self:provider.environment.RESUME_S3_BUCKET}/*"
+            - Sid: PublicListBuckets
+              Effect: Allow
+              Principal: "*"
+              Action:
+                - s3:ListBucket
+              Resource: "arn:aws:s3:::${self:provider.environment.RESUME_S3_BUCKET}"
         Bucket: !Ref ResumeBucket
