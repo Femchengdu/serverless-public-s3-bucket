@@ -17,10 +17,6 @@ I have chosen to use the Serverless framework here because it is the tool I am m
 - Configure Serverless to use the generated SSO profile `sls config credentials -o --provider aws --key change_me --secret change_me --profile serverless`
 - To deploy the project run `serverless deploy`
 - To tear down the deployment, run `serverless remove`
-- Create a serverless framework app
-- Run the follwing command to init the serverless project
-- Configure the serverless organization
-- Deploy the application
 
 ## TODO
 
