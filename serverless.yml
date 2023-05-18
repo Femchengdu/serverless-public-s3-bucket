@@ -27,6 +27,9 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: ${self:provider.environment.RESUME_S3_BUCKET}
+        WebsiteConfiguration:
+          IndexDocument: index.html
+          ErrorDocument: index.html
         PublicAccessBlockConfiguration: # The following makes the S3 bucket public for reading and writing.
           BlockPublicAcls: false
           IgnorePublicAcls: false
