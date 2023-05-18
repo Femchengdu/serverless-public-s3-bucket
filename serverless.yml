@@ -1,0 +1,64 @@
+app: serverless-resume-app
+org: paris0dev0ops
+service: serverless-resume-app
+
+plugins:
+  - serverless-iam-roles-per-function
+  - serverless-plugin-tracing
+  - serverless-dotenv-plugin
+
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'eu-west-1'}
+
+  environment:
+    RESUME_S3_BUCKET: serverless-passy-7516-resume-${self:provider.stage}
+    AUTH_0_SECRET: ${env:AUTH_0_SECRET}
+
+resources:
+  Resources:
+    # Do not forget to add the CorsConfiguration propoerty
+    ResumeBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.environment.RESUME_S3_BUCKET}
+        PublicAccessBlockConfiguration: # The following makes the S3 bucket public for reading and writing.
+          BlockPublicAcls: false
+          IgnorePublicAcls: false
+          BlockPublicPolicy: false
+          RestrictPublicBuckets: false
+        CorsConfiguration:
+          CorsRules:
+            - AllowedOrigins:
+                - "*"
+              AllowedHeaders:
+                - "*"
+              AllowedMethods:
+                - GET
+                - PUT
+                - POST
+                - DELETE
+                - HEAD
+              MaxAge: 3000
+
+    # For cross referencing the name of the bucket, use "!Ref ResumeBucket"
+    BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        PolicyDocument:
+          Id: MyPolicy
+          Version: "2012-10-17"
+          Statement:
+            - Sid: PublicReadForGetBucketObjects
+              Effect: Allow
+              Principal: "*"
+              Action:
+                - s3:GetObject
+                - s3:PutObject
+              Resource: "arn:aws:s3:::${self:provider.environment.RESUME_S3_BUCKET}/*"
+        Bucket: !Ref ResumeBucket
